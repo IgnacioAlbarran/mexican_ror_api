@@ -1,24 +1,10 @@
-# README
+# MEXICAN
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a project for a JSON-api that reads and updates information about a local business called “The Original Mexican Burrito”, in different platforms via its corresponding API.
 
-Things you may want to cover:
+We will be using Postgres as a db.
 
-* Ruby version
+For testing we use RSpec, plus Shoulda matchers, and for the factories and its content factory-bot and ffaker.
 
-* System dependencies
 
-* Configuration
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
