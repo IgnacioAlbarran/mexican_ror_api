@@ -1,3 +1,6 @@
+require 'platform_a_api'
+require 'platform_b_api'
+
 class VenuesController < ApplicationController
   before_action :set_venue, only: [:show, :update, :destroy]
 
@@ -39,8 +42,13 @@ class VenuesController < ApplicationController
   end
 
   def platform_a_data
-    api = PlatformAApi.new()
+    api = PlatformAApi.new
     render json: api.platform_a_info
+  end
+
+  def platform_b_data
+    api = PlatformBApi.new
+    render json: api.platform_b_info
   end
 
   private

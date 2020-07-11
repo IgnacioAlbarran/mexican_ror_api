@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'ffaker'
 require 'platform_a_api'
+require 'platform_b_api'
 
 describe VenuesController do
   before(:each) do
@@ -110,6 +111,14 @@ describe VenuesController do
       api = PlatformAApi.new
       response = api.platform_a_info
       expect(response["name"]).to eq("O'Reilly Group")
+    end
+  end
+
+  describe '#get_platform_b' do
+    it 'gives us the JSON with platform_b data' do
+      api = PlatformBApi.new
+      response = api.platform_b_info
+      expect(response["category_id"]).to eq(2000)
     end
   end
 end
