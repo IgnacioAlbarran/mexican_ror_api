@@ -38,6 +38,11 @@ class VenuesController < ApplicationController
     @venue.destroy
   end
 
+  def platform_a_data
+    api = PlatformAApi.new()
+    render json: api.platform_a_info
+  end
+
   private
 
     def set_venue

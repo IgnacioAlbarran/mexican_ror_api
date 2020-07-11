@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'ffaker'
+require 'platform_a_api'
 
 describe VenuesController do
   before(:each) do
@@ -101,6 +102,14 @@ describe VenuesController do
       expect {
         delete :destroy, params: {id: venue.to_param}
       }.to change(Venue, :count).by(-1)
+    end
+  end
+
+  describe '#get_platform_a' do
+    it 'gives us the JSON with platform_a data' do
+      api = PlatformAApi.new
+      response = api.platform_a_info
+      expect(response["name"]).to eq("O'Reilly Group")
     end
   end
 end
