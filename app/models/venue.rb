@@ -1,6 +1,9 @@
 class Venue < ApplicationRecord
   HOURS_REGEXP = /(\d{2}\:\d{2}\-\d{2}\:\d{2}\,){6}\d{2}\:\d{2}\-\d{2}\:\d{2}/
   URL_REGEXP = /(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?/ix
+  DAYS_OF_WEEK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  VALID_CATEGORIES_ID_A = 1000..1200
+  VALID_CATEGORIES_ID_B = 2000..2200
 
   validates :name, presence: true, uniqueness: true
   validates :address_line_1, presence: true
@@ -14,10 +17,15 @@ class Venue < ApplicationRecord
   validates :hours, presence: true
   validates :hours, format: { with: HOURS_REGEXP,
     message: 'Format must be like: 10:00-22:00,10:00-22:00,10:00-22:00,10:00-22:00,10:00-22:00,11:00-18:00,11:00-18:00' }
-    validates :website, format: { with: URL_REGEXP, message: 'You provided invalid URL' }
+  validates :website, format: { with: URL_REGEXP, message: 'You provided invalid URL' }
 
-  VALID_CATEGORIES_ID_A = 1000..1200
-  VALID_CATEGORIES_ID_B = 2000..2200
+  def hours_platform_a
+    hours.split(',').map { |day| day }.join("|")
+  end
+
+  def hours_platform_b
+    hours.split(',').map.with_index { |day, i| DAYS_OF_WEEK[i] + ':' + day }.join("|")
+  end
 
   private
 

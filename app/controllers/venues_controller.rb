@@ -29,6 +29,7 @@ class VenuesController < ApplicationController
   # PATCH/PUT /venues/1
   def update
     if @venue.update(venue_params)
+      update_platforms(@venue)
       render json: @venue
     else
       render json: @venue.errors, status: :unprocessable_entity
@@ -53,6 +54,11 @@ class VenuesController < ApplicationController
   def platform_c_data
     api = Platforms.new
     render json: api.platform_info_from(Platforms::URL_C)
+  end
+
+  def update_platforms(venue)
+    api = Platforms.new
+    api.change_platforms(venue)
   end
 
   private
