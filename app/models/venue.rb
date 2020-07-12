@@ -10,7 +10,8 @@ class Venue < ApplicationRecord
   validate :category_id_a_is_valid
   validates :category_id_b, presence: true
   validate :category_id_b_is_valid
-  validates :closed, presence: true
+  validates :closed, exclusion: { in: [nil] }
+  validates :hours, presence: true
   validates :hours, format: { with: HOURS_REGEXP,
     message: 'Format must be like: 10:00-22:00,10:00-22:00,10:00-22:00,10:00-22:00,10:00-22:00,11:00-18:00,11:00-18:00' }
     validates :website, format: { with: URL_REGEXP, message: 'You provided invalid URL' }
