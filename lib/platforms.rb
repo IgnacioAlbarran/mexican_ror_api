@@ -1,7 +1,7 @@
 require 'httparty'
 
 class Platforms
-  URL_A = 'https://rails-code-challenge.herokuapp.com/platform_a/venue?api_key=f4ac0bb0f8bdad55977df17d72835d82'
+  URL_A = 'https://rokuapp.com/platform_a/venue?api_key=f4ac0bb0f8bdad55977df17d72835d82'
   URL_B = 'https://rails-code-challenge.herokuapp.com/platform_b/venue?api_key=f4ac0bb0f8bdad55977df17d72835d82'
   URL_C = 'https://rails-code-challenge.herokuapp.com/platform_c/venue?api_key=f4ac0bb0f8bdad55977df17d72835d82'
 
@@ -54,11 +54,29 @@ class Platforms
     JSON.parse(response.body)
   end
 
+  def update_platform(url, params)
+    Thread.new{
+      begin
+        HTTParty.patch(url, body: params)
+      rescue => e
+        error =  %(\n* * * * * ERROR * * * *
+                   \n#{Time.now} --  Error:  #{e}
+                   \n PLATFORM NOT UPDATED
+                   \n URL: #{url}
+                   \n PARAMS: #{params}
+                   \n* * * * *  END  * * * *)
+        logger = Rails.logger
+        logger.error error
+      end
+    }
+  end
+
   def change_platforms(venue)
     threads = []
-    threads << Thread.new{ HTTParty.patch(URL_A, body: params_platform_a(venue)) }
-    threads << Thread.new{ HTTParty.patch(URL_B, body: params_platform_b(venue)) }
-    threads << Thread.new{ HTTParty.patch(URL_C, body: params_platform_c(venue)) }
+
+    threads << update_platform(URL_A, params_platform_a(venue))
+    threads << update_platform(URL_B, params_platform_b(venue))
+    threads << update_platform(URL_C, params_platform_c(venue))
     threads.each(&:join)
   end
 end
