@@ -55,8 +55,10 @@ class Platforms
   end
 
   def change_platforms(venue)
-    HTTParty.patch(URL_A, body: params_platform_a(venue))
-    HTTParty.patch(URL_B, body: params_platform_b(venue))
-    HTTParty.patch(URL_C, body: params_platform_c(venue))
+    threads = []
+    threads << Thread.new{ HTTParty.patch(URL_A, body: params_platform_a(venue)) }
+    threads << Thread.new{ HTTParty.patch(URL_B, body: params_platform_b(venue)) }
+    threads << Thread.new{ HTTParty.patch(URL_C, body: params_platform_c(venue)) }
+    threads.each(&:join)
   end
 end
