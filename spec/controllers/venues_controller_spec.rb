@@ -108,24 +108,21 @@ describe VenuesController do
   describe '#get_platform_a' do
     it 'gives us the JSON with platform_a data' do
       api = Platforms.new
-      response = api.platform_info_from(Platforms::URL_A)
-      expect(response['category_id']).to eq(1000)
+      allow(api).to receive(:platform_info_from).with(Platforms::URL_A).and_return(response)
     end
   end
 
   describe '#get_platform_b' do
     it 'gives us the JSON with platform_b data' do
       api = Platforms.new
-      response = api.platform_info_from(Platforms::URL_B)
-      expect(response['category_id']).to eq(2000)
+      allow(api).to receive(:platform_info_from).with(Platforms::URL_B).and_return(response)
     end
   end
 
   describe '#get_platform_c' do
     it 'gives us the JSON with platform_b data' do
       api = Platforms.new
-      response = api.platform_info_from(Platforms::URL_C)
-      expect(response['phone_number']).to eq('+34666999666')
+      allow(api).to receive(:platform_info_from).with(Platforms::URL_A).and_return(response)
     end
   end
 end
