@@ -59,6 +59,7 @@ class VenuesController < ApplicationController
   def update_platforms(venue)
     api = Platforms.new
     api.change_platforms(venue)
+    render json: @error_json if @error_json
   end
 
   private
