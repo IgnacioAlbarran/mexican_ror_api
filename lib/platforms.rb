@@ -60,7 +60,7 @@ class Platforms
         HTTParty.patch(url, body: params)
       rescue StandardError => e
         send_error_to_logger(url, params, e)
-        render json: { venue: { "status": 'error', "message": e.message } }
+        @error_json = { venue: { "status": 'error', "message": e.message } }
       end
     }
   end
