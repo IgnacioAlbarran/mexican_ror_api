@@ -58,17 +58,23 @@ class Platforms
     Thread.new{
       begin
         HTTParty.patch(url, body: params)
-      rescue => e
-        error =  %(\n* * * * * ERROR * * * *
-                   \n#{Time.now} --  Error:  #{e}
-                   \n PLATFORM NOT UPDATED
-                   \n URL: #{url}
-                   \n PARAMS: #{params}
-                   \n* * * * *  END  * * * *)
-        logger = Rails.logger
-        logger.error error
+      rescue StandardError => e
+        send_error_to_logger(url, params, e)
+        render json: { venue: { "status": 'error', "message": e.message } }
       end
     }
+  end
+
+  def send_error_to_logger(url, params, e)
+    error =  %(\n* * * * * ERROR * * * *
+               \n #{Time.now}
+               \n PLATFORM NOT UPDATED
+               \n URL: #{url}
+               \n MESSAGE: #{e.message}
+               \n PARAMS: #{params}
+               \n* * * * *  END  * * * *)
+    logger = Rails.logger
+    logger.error error
   end
 
   def change_platforms(venue)
