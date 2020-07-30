@@ -14,7 +14,7 @@ class Platforms
   def update_platform(url, params)
     Thread.new{
       begin
-        (HTTParty.patch(url, body: params)) # .MÉTODO_QUE_DE_LOS_RESULTADOS == SUCCESS) || raise
+        (HTTParty.patch(url, body: params))
       rescue StandardError => e
         send_error_to_logger(url, params, e)
         @error_json = { venue: { "status": 'error', "message": e.message } }
