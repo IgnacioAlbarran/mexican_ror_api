@@ -19,12 +19,48 @@ class Venue < ApplicationRecord
     message: 'Format must be like: 10:00-22:00,10:00-22:00,10:00-22:00,10:00-22:00,10:00-22:00,11:00-18:00,11:00-18:00' }
   validates :website, format: { with: URL_REGEXP, message: 'You provided invalid URL' }
 
-  def hours_platform_a
-    hours.split(',').map { |day| day }.join("|")
+  def params_platform_a
+    {"venue":
+      {
+        name: name,
+        address: address_line_1,
+        lat: lat,
+        lng: lng,
+        category_id: category_id_a,
+        closed: closed,
+        hours: hours_platform_a
+      }
+    }
   end
 
-  def hours_platform_b
-    hours.split(',').map.with_index { |day, i| DAYS_OF_WEEK[i] + ':' + day }.join("|")
+  def params_platform_b
+    {"venue":
+      {
+        name: name,
+        street_address: address_line_1,
+        lat: lat,
+        lng: lng,
+        category_id: category_id_b,
+        closed: closed,
+        hours: hours_platform_b
+      }
+    }
+  end
+
+  def params_platform_c
+    {"venue":
+      {
+        name: name,
+        address_line_1: address_line_1,
+        address_line_2: address_line_2,
+        website: website,
+        phone_number: phone_number,
+        lat: lat,
+        lng: lng,
+        closed: closed,
+        hours: hours
+      }
+    }
   end
 
   private
@@ -40,4 +76,13 @@ class Venue < ApplicationRecord
       errors.add(:category_id_b, 'Has to be between 2000 and 2200')
     end
   end
+
+  def hours_platform_a
+    hours.split(',').map { |day| day }.join("|")
+  end
+
+  def hours_platform_b
+    hours.split(',').map.with_index { |day, i| DAYS_OF_WEEK[i] + ':' + day }.join("|")
+  end
+
 end
