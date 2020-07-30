@@ -1,7 +1,7 @@
 require 'httparty'
 
 class Platforms
-  API_KEY = 'f4ac0bb0f8bdad55977df17d72835d82'
+  API_KEY = File.read('external_apis_key')
   URL_A = "https://rails-code-challenge.herokuapp.com/platform_a/venue?api_key=#{API_KEY}"
   URL_B = "https://rails-code-challenge.herokuapp.com/platform_b/venue?api_key=#{API_KEY}"
   URL_C = "https://rails-code-challenge.herokuapp.com/platform_c/venue?api_key=#{API_KEY}"
@@ -38,7 +38,7 @@ class Platforms
     threads = []
 
     threads << update_platform(URL_A, venue.params_platform_a)
-    byebug
+
     threads << update_platform(URL_B, venue.params_platform_b)
     threads << update_platform(URL_C, venue.params_platform_c)
     threads.each(&:join)
